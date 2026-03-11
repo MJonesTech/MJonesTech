@@ -20,7 +20,7 @@ jobs:
           repos_json=$(gh api graphql --paginate -F username="MJonesTech" -f query='
             query($username: String!, $cursor: String) {
               user(login: $username) {
-                repositories(first: 5, orderBy: {field: UPDATED_AT, direction: DESC}, ownerAffiliations: OWNER, isPrivate: false, after: $cursor) {
+                repositories(first: 5, orderBy: {field: UPDATED_AT, direction: DESC}, ownerAffiliations: OWNER, privacy: PUBLIC) {
                   nodes {
                     name
                     description
