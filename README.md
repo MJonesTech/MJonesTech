@@ -16,7 +16,8 @@ I'm M Jones - just a guy who likes making cool things.
 
 ### 🚀 Recent Projects
 
-_Updated automatically_
+- [**[MJonesTech](https://github.com/MJonesTech/MJonesTech)]** - GITHUB PROFILE FOR FRONT PAGE
+  - Language: N/A | Stars: 0
 
 ---
 
