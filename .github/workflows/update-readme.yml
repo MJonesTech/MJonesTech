@@ -20,14 +20,10 @@ jobs:
         with:
           token: ${{ github.token }}
 
-      - name: Generate metrics
-        uses: lowlighter/metrics@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          user: MJonesTech
-          template: classic
-          plugins: base,calendar,languages,commits
-          base: repositories,followers
+      - name: Download metrics
+        run: |
+          mkdir -p assets
+          curl -sL "https://metrics.lecoq.io/embed?user=MJonesTech&template=classic&plugins=base,calendar,languages&base=repositories,followers" -o assets/metrics.svg
 
       - name: Get Recent Public Repos
         id: repos
@@ -58,8 +54,6 @@ jobs:
 
       - name: Update README
         run: |
-          mkdir -p assets
-          mv *.svg assets/ 2>/dev/null || true
           {
             echo "## Hi there 👋"
             echo ""
