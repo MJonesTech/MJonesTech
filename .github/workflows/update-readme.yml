@@ -1,0 +1,76 @@
+name: Update README with Recent Projects
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Recent Public Repos
+        id: repos
+        run: |
+          repos_json=$(gh api graphql --paginate -F username="MJonesTech" -f query='
+            query($username: String!, $cursor: String) {
+              user(login: $username) {
+                repositories(first: 5, orderBy: {field: UPDATED_AT, direction: DESC}, ownerAffiliations: OWNER, isPrivate: false, after: $cursor) {
+                  nodes {
+                    name
+                    description
+                    url
+                    stargazerCount
+                    primaryLanguage {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          ' --jq '.data.user.repositories.nodes[:5]')
+
+          {
+            echo "repos<<EOF"
+            echo "$repos_json" | jq -r '.[] | "- [**[\(.name)](\(.url))]** - \(.description // "No description")\n  - Language: \(.primaryLanguage.name // "N/A") | Stars: \(.stargazerCount)"'
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Update README
+        run: |
+          {
+            echo "## Hi there 👋"
+            echo ""
+            echo "I'm M Jones - just a guy who likes making cool things."
+            echo ""
+            echo "- 🔧 Building stuff and learning as I go"
+            echo "- 📍 Based in the UK (London GMT/BST)"
+            echo "- 💡 Open to collaborate on interesting projects"
+            echo ""
+            echo "---"
+            echo ""
+            echo "### 📊 GitHub Stats"
+            echo ""
+            echo "![GitHub Stats](https://github-readme-stats.vercel.app/api?username=MJonesTech&show_icons=true&theme=radical)"
+            echo ""
+            echo "---"
+            echo ""
+            echo "### 🚀 Recent Projects"
+            echo ""
+            echo "${{ steps.repos.outputs.repos }}"
+            echo ""
+            echo "---"
+            echo ""
+            echo "Feel free to check out my work and reach out if you'd like to connect!"
+          } > README.md
+
+      - name: Commit and Push
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git diff --staged --quiet || git commit -m "Update recent projects in README"
+          git push
