@@ -99,15 +99,7 @@ jobs:
 
       - name: Update README
         run: |
-          STATS=$(echo '${{ steps.stats.outputs.stats }}' | jq -r '
-            "| Metric | Count |\n|--------|-------|\n" +
-            "| Public Repos | " + (.repos | tostring) + " |\n" +
-            "| Stars | " + (.stars | tostring) + " |\n" +
-            "| Followers | " + (.followers | tostring) + " |\n" +
-            "| Following | " + (.following | tostring) + " |\n" +
-            "| Total Commits | " + (.commits | tostring) + " |\n" +
-            "| PRs | " + (.prs | tostring) + " |"
-          )
+          STATS=$(echo '${{ steps.stats.outputs.stats }}' | jq -r --arg table "| Metric | Count |--------|-------|" --arg repos (.repos | tostring) --arg stars (.stars | tostring) --arg followers (.followers | tostring) --arg following (.following | tostring) --arg commits (.commits | tostring) --arg prs (.prs | tostring) '"$table\n| Public Repos | $repos |\n| Stars | $stars |\n| Followers | $followers |\n| Following | $following |\n| Total Commits | $commits |\n| PRs | $prs |"')
           
           {
             echo "## Hi there 👋"
