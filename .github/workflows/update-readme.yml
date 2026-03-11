@@ -17,8 +17,8 @@ jobs:
       - name: Get Recent Public Repos
         id: repos
         run: |
-          repos_json=$(gh api graphql --paginate -F username="MJonesTech" -f query='
-            query($username: String!, $cursor: String) {
+          repos_json=$(gh api graphql -F username="MJonesTech" -f query='
+            query($username: String!) {
               user(login: $username) {
                 repositories(first: 5, orderBy: {field: UPDATED_AT, direction: DESC}, ownerAffiliations: OWNER, privacy: PUBLIC) {
                   nodes {
