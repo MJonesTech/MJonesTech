@@ -56,10 +56,10 @@ jobs:
             }
           ' --jq '{
             repos: .data.user.repositories.totalCount,
-            stars: ([.data.user.repositories.nodes[].stargazerCount] | add // 0),
+            stars: ([.data.user.repositories.nodes[] | .stargazerCount] | if length > 0 then add else 0 end),
             followers: .data.user.followers.totalCount,
             following: .data.user.following.totalCount,
-            commits: (.data.user.repositories.nodes[].defaultBranchRef.target.history.totalCount | add // 0),
+            commits: ([.data.user.repositories.nodes[] | .defaultBranchRef.target.history.totalCount] | if length > 0 then add else 0 end),
             prs: .data.user.contributionsCollection.totalPullRequestContributions,
             contributions: .data.user.contributionsCollection.totalRepositoryContributions
           }')
