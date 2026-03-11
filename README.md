@@ -10,7 +10,7 @@ I'm M Jones - just a guy who likes making cool things.
 
 ### 📊 GitHub Stats
 
-![GitHub Stats](./assets/github-stats.svg)
+![GitHub Stats](./assets/metrics.svg)
 
 ---
 
