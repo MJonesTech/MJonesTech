@@ -10,7 +10,7 @@ I'm M Jones - just a guy who likes making cool things.
 
 ### 📊 GitHub Stats
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=MJonesTech&show_icons=true&theme=radical)
+![GitHub Stats](./assets/github-stats.svg)
 
 ---
 
