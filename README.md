@@ -12,12 +12,12 @@ I'm M Jones - just a guy who likes making cool things.
 
 | Metric | Count |
 |--------|-------|
-| Public Repos | - |
-| Stars | - |
-| Followers | - |
-| Following | - |
-| Total Commits | - |
-| PRs | - |
+| Public Repos | 1 |
+| Stars | 0 |
+| Followers | 0 |
+| Following | 0 |
+| Total Commits | 23 |
+| PRs | 0 |
 
 ---
 
