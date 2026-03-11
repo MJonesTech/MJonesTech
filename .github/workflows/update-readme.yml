@@ -20,10 +20,55 @@ jobs:
         with:
           token: ${{ github.token }}
 
-      - name: Download metrics
+      - name: Get User Stats
+        id: stats
         run: |
-          mkdir -p assets
-          curl -sL "https://metrics.lecoq.io/embed?user=MJonesTech&template=classic&plugins=base,calendar,languages&base=repositories,followers" -o assets/metrics.svg
+          stats_json=$(gh api graphql -F username="MJonesTech" -f query='
+            query($username: String!) {
+              user(login: $username) {
+                repositories(first: 100, ownerAffiliations: OWNER, privacy: PUBLIC) {
+                  totalCount
+                  nodes {
+                    stargazerCount
+                    defaultBranchRef {
+                      target {
+                        ... on Commit {
+                          history {
+                            totalCount
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                followers {
+                  totalCount
+                }
+                following {
+                  totalCount
+                }
+                contributionsCollection {
+                  totalCommitContributions
+                  totalPullRequestContributions
+                  totalRepositoryContributions
+                }
+              }
+            }
+          ' --jq '{
+            repos: .data.user.repositories.totalCount,
+            stars: ([.data.user.repositories.nodes[].stargazerCount] | add // 0),
+            followers: .data.user.followers.totalCount,
+            following: .data.user.following.totalCount,
+            commits: (.data.user.repositories.nodes[].defaultBranchRef.target.history.totalCount | add // 0),
+            prs: .data.user.contributionsCollection.totalPullRequestContributions,
+            contributions: .data.user.contributionsCollection.totalRepositoryContributions
+          }')
+
+          {
+            echo "stats<<EOF"
+            echo "$stats_json"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Get Recent Public Repos
         id: repos
@@ -54,6 +99,16 @@ jobs:
 
       - name: Update README
         run: |
+          STATS=$(echo '${{ steps.stats.outputs.stats }}' | jq -r '
+            "| Metric | Count |\n|--------|-------|\n" +
+            "| Public Repos | " + (.repos | tostring) + " |\n" +
+            "| Stars | " + (.stars | tostring) + " |\n" +
+            "| Followers | " + (.followers | tostring) + " |\n" +
+            "| Following | " + (.following | tostring) + " |\n" +
+            "| Total Commits | " + (.commits | tostring) + " |\n" +
+            "| PRs | " + (.prs | tostring) + " |"
+          )
+          
           {
             echo "## Hi there 👋"
             echo ""
@@ -67,7 +122,7 @@ jobs:
             echo ""
             echo "### 📊 GitHub Stats"
             echo ""
-            echo "![GitHub Stats](./assets/metrics.svg)"
+            echo "$STATS"
             echo ""
             echo "---"
             echo ""
@@ -84,6 +139,6 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add README.md assets/metrics.svg
-          git diff --staged --quiet || git commit -m "Update recent projects and stats in README"
+          git add README.md
+          git diff --staged --quiet || git commit -m "Update recent projects in README"
           git push

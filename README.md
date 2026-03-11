@@ -10,7 +10,14 @@ I'm M Jones - just a guy who likes making cool things.
 
 ### 📊 GitHub Stats
 
-![GitHub Stats](./assets/metrics.svg)
+| Metric | Count |
+|--------|-------|
+| Public Repos | - |
+| Stars | - |
+| Followers | - |
+| Following | - |
+| Total Commits | - |
+| PRs | - |
 
 ---
 
