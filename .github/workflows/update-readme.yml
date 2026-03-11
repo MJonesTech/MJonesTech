@@ -21,19 +21,13 @@ jobs:
           token: ${{ github.token }}
 
       - name: Generate metrics
-        uses: lowlighter/metrics@latest
+        uses: lowlighter/metrics@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           user: MJonesTech
           template: classic
-          plugins: |
-            base
-            calendar
-            languages
-            commits
-          base: |
-            *repositories*
-            *followers*
+          plugins: base,calendar,languages,commits
+          base: repositories,followers
 
       - name: Get Recent Public Repos
         id: repos
