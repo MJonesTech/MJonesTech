@@ -16,7 +16,7 @@ I'm M Jones - just a guy who likes making cool things.
 | Stars | 0 |
 | Followers | 0 |
 | Following | 1 |
-| Total Commits | 74 |
+| Total Commits | 75 |
 | PRs | 0 |
 
 ---
