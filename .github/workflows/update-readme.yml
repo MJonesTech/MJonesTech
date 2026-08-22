@@ -108,9 +108,9 @@ jobs:
             "| Total Commits | " + (.commits | tostring) + " |\n" +
             "| PRs | " + (.prs | tostring) + " |"
           EOFJQ
-          
+
           STATS_TABLE=$(echo '${{ steps.stats.outputs.stats }}' | jq -rf /tmp/stats.jq)
-          
+
           {
             echo "## Hi there 👋"
             echo ""
@@ -125,12 +125,6 @@ jobs:
             echo "### 📊 GitHub Stats"
             echo ""
             echo "$STATS_TABLE"
-            echo ""
-            echo "---"
-            echo ""
-            echo "### 🚀 Recent Projects"
-            echo ""
-            echo "${{ steps.repos.outputs.repos }}"
             echo ""
             echo "---"
             echo ""
