@@ -16,15 +16,8 @@ I'm M Jones - just a guy who likes making cool things.
 | Stars | 0 |
 | Followers | 0 |
 | Following | 1 |
-| Total Commits | 190 |
+| Total Commits | 192 |
 | PRs | 0 |
-
----
-
-### 🚀 Recent Projects
-
-- [**[MJonesTech](https://github.com/MJonesTech/MJonesTech)]** - GITHUB PROFILE FOR FRONT PAGE
-  - Language: N/A | Stars: 0
 
 ---
 
